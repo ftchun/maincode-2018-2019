@@ -12,6 +12,8 @@ public class MaybeFirst extends LinearOpMode {
     private DcMotor motorBL;
     private DcMotor motorBR;
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -19,6 +21,15 @@ public class MaybeFirst extends LinearOpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
+
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
+        motorFL.setDirection(DcMotor.Direction.REVERSE);
+
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         int speedConstant = 1;
         boolean prevX = false;
@@ -62,6 +73,14 @@ public class MaybeFirst extends LinearOpMode {
                 motorBR.setPower(-gamepad1.right_stick_y/8);
                 motorFR.setPower(-gamepad1.right_stick_y/8);
             }
+
+            int motorBRPosition = motorBR.getCurrentPosition();
+            int motorBLPosition = motorBL.getCurrentPosition();
+
+            telemetry.addData("motorBR Position: ", motorBRPosition);
+            telemetry.addData("motorBL Position: ", motorBLPosition);
+            telemetry.addData("The Speed: ", speedConstant);
+            telemetry.update();
         }
 
         idle();
