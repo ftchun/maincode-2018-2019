@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Maybe First", group = "Linear")
 public class MaybeFirst extends LinearOpMode {
@@ -12,7 +13,7 @@ public class MaybeFirst extends LinearOpMode {
     private DcMotor motorBL;
     private DcMotor motorBR;
 
-
+    private Servo servo;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -21,6 +22,8 @@ public class MaybeFirst extends LinearOpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
+
+        servo = hardwareMap.servo.get("servo");
 
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
@@ -34,6 +37,8 @@ public class MaybeFirst extends LinearOpMode {
         int speedConstant = 1;
         boolean prevX = false;
         boolean prevY = false;
+
+        double servoDelta = .02;
 
         waitForStart();
 
@@ -72,6 +77,12 @@ public class MaybeFirst extends LinearOpMode {
                 motorFL.setPower(-gamepad1.left_stick_y/8);
                 motorBR.setPower(-gamepad1.right_stick_y/8);
                 motorFR.setPower(-gamepad1.right_stick_y/8);
+            }
+
+            if (gamepad2.left_bumper) {
+                servo.setPosition(servo.getPosition()-servoDelta);
+            } else if (gamepad2.right_bumper) {
+                servo.setPosition(servo.getPosition()+servoDelta);
             }
 
             int motorBRPosition = motorBR.getCurrentPosition();
