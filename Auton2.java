@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "RedAuton2", group = "Linear")
-public class RedAuton2 extends LinearOpMode {
+@Autonomous(name = "Auton2", group = "Linear")
+public class Auton2 extends LinearOpMode {
 
     private DcMotor motorFL;
     private DcMotor motorFR;
@@ -30,43 +30,39 @@ public class RedAuton2 extends LinearOpMode {
 
         waitForStart();
 
-		driveBackward(-1000,-.05);
-		timer(5000);
-		servo.setPosition(.5);
-		timer(5000);
+
+        //timer(1000);
+
+		move(-6000,-.5, 4000);
+
+        servo.setPosition(.1);
+		timer(2000);
+
+		move(1000, .5, 2000);
+		servo.setPosition(1);
+		timer(1000);
     }
 
-    public void moveForward(int distance, int time) {
-        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void move(int distance, double power, long time) throws InterruptedException {
         motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBL.setTargetPosition(distance);
         motorBR.setTargetPosition(distance);
-    }
 
-	private void driveBackward(int position, double power) {
-        while (motorBR.getCurrentPosition() > position || motorBL.getCurrentPosition() > position) {
-            motorFL.setPower(power);
-            motorFR.setPower(power);
-            motorBL.setPower(power);
-            motorBR.setPower(power);
-        }
+        motorBL.setPower(power);
+        motorBR.setPower(power);
 
-        motorFL.setPower(0);
-        motorFR.setPower(0);
+        timer(time);
+
         motorBL.setPower(0);
         motorBR.setPower(0);
 
-        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-	
-	private void timer (long time) throws InterruptedException {
+
+	private void timer(long time) throws InterruptedException {
         Thread.sleep(time);
     }
 }
