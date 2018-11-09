@@ -61,7 +61,7 @@ public class MaybeFirst extends LinearOpMode {
         double servoDelta = .02;
         double servoPositionCount = 1;
 
-        int liftDelta = 10;
+        int liftDelta = 5;
         int liftPositionCountL = 0;
         int liftPositionCountR = 0;
 
