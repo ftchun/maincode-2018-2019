@@ -45,16 +45,14 @@ public class Auton2 extends LinearOpMode {
 
         waitForStart();
 
+        moveLift(810, 810, 1, 5000);
 
-		move(-6000,-.5, 4000);
+        shiftRight(500, .5, 5000);
+
+        //move(-6000, -.5, 6000);
 
         servo.setPosition(.1);
-		timer(2000);
-
-		move(1000, .5, 2000);
-		servo.setPosition(1);
-		timer(1000);
-
+        timer(2000);
     }
 
     public void move(int distance, double power, long time) throws InterruptedException {
@@ -76,11 +74,32 @@ public class Auton2 extends LinearOpMode {
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveLift(int positionL, int positionR, double power) {
+    public void shiftRight(int distance, double power, long time) throws InterruptedException {
+        motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBL.setTargetPosition(distance);
+        motorBR.setTargetPosition(-distance);
+
+        motorBL.setPower(power);
+        motorBR.setPower(power);
+
+        timer(time);
+
+        motorBL.setPower(0);
+        motorBR.setPower(0);
+
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void moveLift(int positionL, int positionR, double power, long time) throws InterruptedException {
         motorHL.setTargetPosition(positionL);
         motorHR.setTargetPosition(positionR);
         motorHL.setPower(power);
         motorHR.setPower(power);
+
+        timer(time);
     }
 
 	private void timer(long time) throws InterruptedException {
