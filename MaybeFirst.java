@@ -38,7 +38,7 @@ public class MaybeFirst extends LinearOpMode {
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
 
-        motorHR.setDirection(DcMotor.Direction.REVERSE);
+        //motorHR.setDirection(DcMotor.Direction.REVERSE);
         motorHL.setDirection(DcMotor.Direction.REVERSE);
 
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -125,8 +125,8 @@ public class MaybeFirst extends LinearOpMode {
                 liftPositionCountR -= liftDelta;
             }
 
-            liftPositionCountL = Range.clip(liftPositionCountL, 0, 1100);
-            liftPositionCountR = Range.clip(liftPositionCountR, 0, 1000);
+            //liftPositionCountL = Range.clip(liftPositionCountL, 0, 1100);
+            //liftPositionCountR = Range.clip(liftPositionCountR, 0, 1000);
 
             moveLift(liftPositionCountL, liftPositionCountR, 1);
 

@@ -47,7 +47,7 @@ public class Auton2 extends LinearOpMode {
 
         moveLift(810, 810, 1, 5000);
 
-        shiftRight(500, .5, 5000);
+        shiftRight(10000, .5, 15000);
 
         //move(-6000, -.5, 6000);
 
