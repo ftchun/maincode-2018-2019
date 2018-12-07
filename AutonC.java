@@ -44,16 +44,16 @@ public class AutonC extends LinearOpMode {
 
         waitForStart();
 
-        moveLift(1500, 1500, 1, 6000);
+        moveLift(1500, 1500, 1, 5000);
 
-        shiftRight(3000, .5, 5000);
+        shiftRight(3000, .5, 4000);
         //moveRightWheels(-3000, .5, 5000);
 
-        move(-500, -.5, 2000);
+        move(-500, -.5, 1500);
 
-        shiftRight(1500, .5, 2000);
+        shiftRight(1500, .5, 1500);
 
-        move(5000, .5, 5000);
+        move(4500, .5, 5000);
     }
 
     public void move(int distance, double power, long time) throws InterruptedException {

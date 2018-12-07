@@ -44,20 +44,25 @@ public class AutonD extends LinearOpMode {
 
         waitForStart();
 
-        moveLift(1500, 1500, 1, 6000);
+        moveLift(1500, 1500, 1, 5000);
 
-        shiftRight(700, .5, 3000);
+        shiftRight(1000, .5, 2500);
 
         move(-1000, -.5, 2000);
 
-        shiftRight(-500, -.5, 3000);
+        shiftRight(-1000, -.5, 3000);
 
-        move(-5000, -.5, 5000);
+        move(-5500, -.5, 4000);
 
         servo.setPosition(.2);
         timer(2000);
 
         move(1000, .5, 2000);
+
+        servo.setPosition(.9);
+        timer(2000);
+
+        //moveLift(500, 150, 1, 5000);
     }
 
     public void move(int distance, double power, long time) throws InterruptedException {
@@ -96,6 +101,34 @@ public class AutonD extends LinearOpMode {
 
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void moveRightWheels(int distance, double power, long time) throws InterruptedException {
+        motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBR.setTargetPosition(distance);
+
+        motorBR.setPower(power);
+
+        timer(time);
+
+        motorBR.setPower(0);
+
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void moveLeftWheels(int distance, double power, long time) throws InterruptedException {
+        motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBL.setTargetPosition(distance);
+
+        motorBL.setPower(power);
+
+        timer(time);
+
+        motorBL.setPower(0);
+
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void moveLift(int positionL, int positionR, double power, long time) throws InterruptedException {
