@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,17 +12,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name = "Gyro Test", group = "Linear")
-public class ColorTest extends LinearOpMode {
+@TeleOp(name = "IMUTesting", group = "Linear")
+public class IMUTesting extends LinearOpMode {
 
-    private BNO055IMU imu;
+    private DcMotor motor;
+ 	private BNO055IMU imu;
 
-    double globalAngle;
+ 	double globalAngle;
 
-    
+	
     @Override
     public void runOpMode() throws InterruptedException {
 
+        motor = hardwareMap.dcMotor.get("motor");
+        
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
@@ -31,17 +37,20 @@ public class ColorTest extends LinearOpMode {
 
         imu.initialize(parameters);
 
-
-
         waitForStart();
 
-        while(opModeIsActive()) {
-            getAngle();
-
-            telemetry.addData("angle", globalAngle);
-
+        while(opModeIsActive()){
+        	getAngle();
+        	if(globalAngle > 0){
+        		motor.setPower(0.5);
+        	} else {
+        		motor.setPower(-0.5);
+        	}
+        	telemetry.addData("angle", globalAngle);
             telemetry.update();
         }
+
+        
     }
 
     private void getAngle()
@@ -68,5 +77,9 @@ public class ColorTest extends LinearOpMode {
         //lastAngles = angles;
 
         //return globalAngle;
+    }
+
+	private void timer(long time) throws InterruptedException {
+        Thread.sleep(time);
     }
 }
