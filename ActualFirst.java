@@ -64,6 +64,9 @@ public class ActualFirst extends LinearOpMode {
         int liftPositionCountL = 0;
         int liftPositionCountR = 0;
 
+        //if 1 then forward, if -1 then backward
+        int reverse = 1;
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -77,32 +80,40 @@ public class ActualFirst extends LinearOpMode {
                 speedConstant += 1;
             }
 
+            if (gamepad1.a && reverse == -1) {
+                reverse = 1;
+            }
+
+            if (gamepad1.b && reverse == 1) {
+                reverse = -1;
+            }
+
             prevX = gamepad1.x;
             prevY = gamepad1.y;
 
             //driving
             if(speedConstant == 0)
             {
-                motorBL.setPower(-gamepad1.left_stick_y/2);
-                motorFL.setPower(-gamepad1.left_stick_y/2);
-                motorBR.setPower(-gamepad1.right_stick_y/2);
-                motorFR.setPower(-gamepad1.right_stick_y/2);
+                motorBL.setPower(-gamepad1.left_stick_y/2 * reverse);
+                motorFL.setPower(-gamepad1.left_stick_y/2 * reverse);
+                motorBR.setPower(-gamepad1.right_stick_y/2 * reverse);
+                motorFR.setPower(-gamepad1.right_stick_y/2 * reverse);
             }
 
             if(speedConstant == 1)
             {
-                motorBL.setPower(-gamepad1.left_stick_y/4);
-                motorFL.setPower(-gamepad1.left_stick_y/4);
-                motorBR.setPower(-gamepad1.right_stick_y/4);
-                motorFR.setPower(-gamepad1.right_stick_y/4);
+                motorBL.setPower(-gamepad1.left_stick_y/4 * reverse);
+                motorFL.setPower(-gamepad1.left_stick_y/4 * reverse);
+                motorBR.setPower(-gamepad1.right_stick_y/4 * reverse);
+                motorFR.setPower(-gamepad1.right_stick_y/4 * reverse);
             }
 
             if(speedConstant == 2)
             {
-                motorBL.setPower(-gamepad1.left_stick_y/8);
-                motorFL.setPower(-gamepad1.left_stick_y/8);
-                motorBR.setPower(-gamepad1.right_stick_y/8);
-                motorFR.setPower(-gamepad1.right_stick_y/8);
+                motorBL.setPower(-gamepad1.left_stick_y/8 * reverse);
+                motorFL.setPower(-gamepad1.left_stick_y/8 * reverse);
+                motorBR.setPower(-gamepad1.right_stick_y/8 * reverse);
+                motorFR.setPower(-gamepad1.right_stick_y/8 * reverse);
             }
 
             //move servo
