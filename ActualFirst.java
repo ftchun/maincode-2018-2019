@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "Actual First", group = "Linear")
 public class ActualFirst extends LinearOpMode {
@@ -20,6 +19,8 @@ public class ActualFirst extends LinearOpMode {
 
     private Servo servo;
 
+    private Servo servoClaw;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -33,6 +34,8 @@ public class ActualFirst extends LinearOpMode {
         motorHR = hardwareMap.dcMotor.get("motorHR");
 
         servo = hardwareMap.servo.get("servo");
+
+        servoClaw = hardwareMap.servo.get("servoClaw");
 
         //set modes
         motorBL.setDirection(DcMotor.Direction.REVERSE);
@@ -52,19 +55,21 @@ public class ActualFirst extends LinearOpMode {
         motorHR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorHR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //servo var stuff
+        //speed var stuff
         int speedConstant = 1;
         boolean prevX = false;
         boolean prevY = false;
 
+        //servo var stuff
         double servoDelta = .02;
         double servoPositionCount = 1;
 
+        //lift var stuff
         int liftDelta = 5;
         int liftPositionCountL = 0;
         int liftPositionCountR = 0;
 
-        //if 1 then forward, if -1 then backward
+        //reverse movement: if 1 then forward, if -1 then backward
         int reverse = 1;
 
         waitForStart();
@@ -80,6 +85,10 @@ public class ActualFirst extends LinearOpMode {
                 speedConstant += 1;
             }
 
+            prevX = gamepad1.x;
+            prevY = gamepad1.y;
+
+            //reverse stuff
             if (gamepad1.a && reverse == -1) {
                 reverse = 1;
             }
@@ -87,9 +96,6 @@ public class ActualFirst extends LinearOpMode {
             if (gamepad1.b && reverse == 1) {
                 reverse = -1;
             }
-
-            prevX = gamepad1.x;
-            prevY = gamepad1.y;
 
             //driving
             if(speedConstant == 0)
@@ -123,8 +129,8 @@ public class ActualFirst extends LinearOpMode {
                 servoPositionCount += servoDelta;
             }
 
-            servoDelta = Range.clip(servoDelta, .2, 1);
-            servo.setPosition(servoPositionCount);
+            /*servoDelta = Range.clip(servoDelta, .2, 1);*/
+            servoClaw.setPosition(servoPositionCount);
 
             //move linear lift
             if (gamepad2.dpad_up) {
@@ -158,6 +164,7 @@ public class ActualFirst extends LinearOpMode {
 
     }
 
+    //method for moving linear lift
     public void moveLift(int positionL, int positionR, double power) {
         motorHL.setTargetPosition(positionL);
         motorHR.setTargetPosition(positionR);
