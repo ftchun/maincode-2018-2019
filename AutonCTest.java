@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutonC", group = "Linear")
-public class AutonC extends LinearOpMode {
+public class AutonCTest extends LinearOpMode {
 
     private DcMotor motorFL;
     private DcMotor motorFR;
