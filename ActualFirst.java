@@ -41,7 +41,7 @@ public class ActualFirst extends LinearOpMode {
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
 
-        motorHL.setDirection(DcMotor.Direction.REVERSE);
+        motorHR.setDirection(DcMotor.Direction.REVERSE);
 
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
