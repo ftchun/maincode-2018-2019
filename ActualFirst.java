@@ -17,6 +17,8 @@ public class ActualFirst extends LinearOpMode {
     private DcMotor motorHR;
     private DcMotor motorHL;
 
+    private DcMotor motorArm;
+
     private Servo servo;
 
     private Servo servoClaw;
@@ -32,6 +34,8 @@ public class ActualFirst extends LinearOpMode {
 
         motorHL = hardwareMap.dcMotor.get("motorHL");
         motorHR = hardwareMap.dcMotor.get("motorHR");
+
+        motorArm = hardwareMap.dcMotor.get("motorArm");
 
         servo = hardwareMap.servo.get("servo");
 
@@ -55,6 +59,11 @@ public class ActualFirst extends LinearOpMode {
         motorHR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorHR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        motorArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorArm.setPower(.5);
+
         //speed var stuff
         int speedConstant = 1;
         boolean prevX = false;
@@ -68,6 +77,10 @@ public class ActualFirst extends LinearOpMode {
         int liftDelta = 5;
         int liftPositionCountL = 0;
         int liftPositionCountR = 0;
+
+        //arm var stuff
+        int armDelta = 10;
+        int armPos = 0;
 
         //reverse movement: if 1 then forward, if -1 then backward
         int reverse = 1;
@@ -122,6 +135,8 @@ public class ActualFirst extends LinearOpMode {
                 motorFR.setPower(-gamepad1.right_stick_y/8 * reverse);
             }
 
+
+            /*
             //move servo
             if (gamepad2.left_bumper) {
                 servoPositionCount -= servoDelta;
@@ -130,7 +145,8 @@ public class ActualFirst extends LinearOpMode {
             }
 
             /*servoDelta = Range.clip(servoDelta, .2, 1);*/
-            servoClaw.setPosition(servoPositionCount);
+            //servoClaw.setPosition(servoPositionCount);
+
 
             //move linear lift
             if (gamepad2.dpad_up) {
@@ -142,6 +158,14 @@ public class ActualFirst extends LinearOpMode {
             }
 
             moveLift(liftPositionCountL, liftPositionCountR, 1);
+
+            if (gamepad2.left_bumper) {
+                armPos -= armDelta;
+            } else if (gamepad2.right_bumper) {
+                armPos += armDelta;
+            }
+
+            motorArm.setTargetPosition(armPos);
 
             //telemetry stuff
             int motorBRPosition = motorBR.getCurrentPosition();
@@ -156,6 +180,8 @@ public class ActualFirst extends LinearOpMode {
 
             telemetry.addData("motorHL Position: ", motorHLPosition);
             telemetry.addData("motorHR Position: ", motorHRPosition);
+
+            telemetry.addData("motorArm position", armPos);
 
             telemetry.update();
         }
