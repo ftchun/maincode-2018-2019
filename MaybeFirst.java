@@ -18,6 +18,8 @@ public class MaybeFirst extends LinearOpMode {
     private DcMotor motorHR;
     private DcMotor motorHL;
 
+    private DcMotor motorArm;
+
     private Servo servo;
 
     @Override
@@ -31,6 +33,8 @@ public class MaybeFirst extends LinearOpMode {
 
         motorHL = hardwareMap.dcMotor.get("motorHL");
         motorHR = hardwareMap.dcMotor.get("motorHR");
+
+        motorArm = hardwareMap.dcMotor.get("motorArm");
 
         servo = hardwareMap.servo.get("servo");
 
@@ -52,6 +56,9 @@ public class MaybeFirst extends LinearOpMode {
 
         motorHR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorHR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //servo var stuff
         int speedConstant = 1;
@@ -106,6 +113,7 @@ public class MaybeFirst extends LinearOpMode {
                 motorFR.setPower(-gamepad1.right_stick_y/8);
             }
 
+            /*
             //move servo
             if (gamepad2.left_bumper) {
                 servoPositionCount -= servoDelta;
@@ -113,9 +121,12 @@ public class MaybeFirst extends LinearOpMode {
                 servoPositionCount += servoDelta;
             }
 
+
             servoDelta = Range.clip(servoDelta, .2, 1);
             servo.setPosition(servoPositionCount);
 
+
+            */
             //move linear lift
             if (gamepad2.dpad_up) {
                 liftPositionCountL += liftDelta;
@@ -125,10 +136,16 @@ public class MaybeFirst extends LinearOpMode {
                 liftPositionCountR -= liftDelta;
             }
 
+            moveLift(liftPositionCountL, liftPositionCountR, 1);
+
+            if (gamepad2.left_bumper) {
+
+            }
+
             //liftPositionCountL = Range.clip(liftPositionCountL, 0, 1100);
             //liftPositionCountR = Range.clip(liftPositionCountR, 0, 1000);
 
-            moveLift(liftPositionCountL, liftPositionCountR, 1);
+
 
             //telemetry stuff
             int motorBRPosition = motorBR.getCurrentPosition();
