@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "Actual First", group = "Linear")
 public class ActualFirst extends LinearOpMode {
@@ -19,9 +20,11 @@ public class ActualFirst extends LinearOpMode {
 
     private DcMotor motorArm;
 
-    private Servo servo;
+    //private Servo servo;
 
-    private Servo servoClaw;
+    //claw servos
+    private Servo clawLeft;
+    private Servo clawRight;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -37,9 +40,10 @@ public class ActualFirst extends LinearOpMode {
 
         motorArm = hardwareMap.dcMotor.get("motorArm");
 
-        servo = hardwareMap.servo.get("servo");
+        //servo = hardwareMap.servo.get("servo");
 
-        servoClaw = hardwareMap.servo.get("servoClaw");
+        clawLeft = hardwareMap.servo.get("clawLeft");
+        clawRight = hardwareMap.servo.get("clawRight");
 
         //set modes
         motorBL.setDirection(DcMotor.Direction.REVERSE);
@@ -62,8 +66,6 @@ public class ActualFirst extends LinearOpMode {
         motorArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorArm.setPower(.25);
-
         //speed var stuff
         int speedConstant = 1;
         boolean prevX = false;
@@ -71,19 +73,25 @@ public class ActualFirst extends LinearOpMode {
 
         //servo var stuff
         double servoDelta = .02;
-        double servoPositionCount = 1;
+        double leftPositionCount = 1;
+        double rightPositionCount = 0;
 
         //lift var stuff
-        int liftDelta = 5;
+        int liftDelta = 8;
         int liftPositionCountL = 0;
         int liftPositionCountR = 0;
 
         //arm var stuff
-        int armDelta = 5;
+        int armDelta = 12;
         int armPos = 0;
 
-        //reverse movement: if 1 then forward, if -1 then backward
-        int reverse = 1;
+        //reverse movement
+        boolean reverse = false;
+
+        //arm power
+        double theArmPower = .25; //constant just to hold the power value
+        double armPower = .25;
+        boolean armPowerOn = true;
 
         waitForStart();
 
@@ -102,51 +110,75 @@ public class ActualFirst extends LinearOpMode {
             prevY = gamepad1.y;
 
             //reverse stuff
-            if (gamepad1.a && reverse == -1) {
-                reverse = 1;
+            if (gamepad1.a) {
+                reverse = false;
+            } else if (gamepad1.b) {
+                reverse = true;
             }
 
-            if (gamepad1.b && reverse == 1) {
-                reverse = -1;
-            }
 
             //driving
             if(speedConstant == 0)
             {
-                motorBL.setPower(-gamepad1.left_stick_y/2 * reverse);
-                motorFL.setPower(-gamepad1.left_stick_y/2 * reverse);
-                motorBR.setPower(-gamepad1.right_stick_y/2 * reverse);
-                motorFR.setPower(-gamepad1.right_stick_y/2 * reverse);
+                if (!reverse) {
+                    motorBL.setPower(-gamepad1.left_stick_y/2);
+                    motorFL.setPower(-gamepad1.left_stick_y/2);
+                    motorBR.setPower(-gamepad1.right_stick_y/2);
+                    motorFR.setPower(-gamepad1.right_stick_y/2);
+                } else if (reverse) {
+                    motorBR.setPower(gamepad1.left_stick_y/2);
+                    motorFR.setPower(gamepad1.left_stick_y/2);
+                    motorBL.setPower(gamepad1.right_stick_y/2);
+                    motorFL.setPower(gamepad1.right_stick_y/2);
+                }
             }
 
             if(speedConstant == 1)
             {
-                motorBL.setPower(-gamepad1.left_stick_y/4 * reverse);
-                motorFL.setPower(-gamepad1.left_stick_y/4 * reverse);
-                motorBR.setPower(-gamepad1.right_stick_y/4 * reverse);
-                motorFR.setPower(-gamepad1.right_stick_y/4 * reverse);
+                if (!reverse) {
+                    motorBL.setPower(-gamepad1.left_stick_y/4);
+                    motorFL.setPower(-gamepad1.left_stick_y/4);
+                    motorBR.setPower(-gamepad1.right_stick_y/4);
+                    motorFR.setPower(-gamepad1.right_stick_y/4);
+                } else if (reverse) {
+                    motorBR.setPower(gamepad1.left_stick_y/4);
+                    motorFR.setPower(gamepad1.left_stick_y/4);
+                    motorBL.setPower(gamepad1.right_stick_y/4);
+                    motorFL.setPower(gamepad1.right_stick_y/4);
+                }
             }
 
             if(speedConstant == 2)
             {
-                motorBL.setPower(-gamepad1.left_stick_y/8 * reverse);
-                motorFL.setPower(-gamepad1.left_stick_y/8 * reverse);
-                motorBR.setPower(-gamepad1.right_stick_y/8 * reverse);
-                motorFR.setPower(-gamepad1.right_stick_y/8 * reverse);
+                if (!reverse) {
+                    motorBL.setPower(-gamepad1.left_stick_y/8);
+                    motorFL.setPower(-gamepad1.left_stick_y/8);
+                    motorBR.setPower(-gamepad1.right_stick_y/8);
+                    motorFR.setPower(-gamepad1.right_stick_y/8);
+                } else if (reverse) {
+                    motorBR.setPower(gamepad1.left_stick_y/8);
+                    motorFR.setPower(gamepad1.left_stick_y/8);
+                    motorBL.setPower(gamepad1.right_stick_y/8);
+                    motorFL.setPower(gamepad1.right_stick_y/8);
+                }
             }
 
 
-            /*
-            //move servo
+
+            //move claw
             if (gamepad2.left_bumper) {
-                servoPositionCount -= servoDelta;
+                rightPositionCount -= servoDelta;
+                leftPositionCount += servoDelta;
             } else if (gamepad2.right_bumper) {
-                servoPositionCount += servoDelta;
+                rightPositionCount += servoDelta;
+                leftPositionCount -= servoDelta;
             }
 
-            /*servoDelta = Range.clip(servoDelta, .2, 1);*/
-            //servoClaw.setPosition(servoPositionCount);
+            leftPositionCount = Range.clip(leftPositionCount, 0, 1);
+            rightPositionCount = Range.clip(rightPositionCount, 0, 1);
 
+            clawLeft.setPosition(leftPositionCount);
+            clawRight.setPosition(rightPositionCount);
 
             //move linear lift
             if (gamepad2.dpad_up) {
@@ -159,13 +191,29 @@ public class ActualFirst extends LinearOpMode {
 
             moveLift(liftPositionCountL, liftPositionCountR, 1);
 
-            if (gamepad2.left_bumper) {
-                armPos -= armDelta;
-            } else if (gamepad2.right_bumper) {
-                armPos += armDelta;
+            //arm emergency stop
+            if (gamepad2.b) {
+                armPowerOn = false;
+            } else if (gamepad2.a) {
+                armPowerOn = true;
             }
 
+            //arm control
+            if (armPowerOn) {
+                armPower = theArmPower;
+                if (gamepad2.x) {
+                    armPos -= armDelta;
+                } else if (gamepad2.y) {
+                    armPos += armDelta;
+                }
+            } else if (!armPowerOn) {
+                armPower = 0;
+            }
+
+            motorArm.setPower(armPower);
             motorArm.setTargetPosition(armPos);
+
+
 
             //telemetry stuff
             int motorBRPosition = motorBR.getCurrentPosition();
@@ -173,6 +221,9 @@ public class ActualFirst extends LinearOpMode {
 
             double motorHLPosition = motorHL.getCurrentPosition();
             double motorHRPosition = motorHR.getCurrentPosition();
+
+            double clawLeftPos = clawLeft.getPosition();
+            double clawRightPos = clawRight.getPosition();
 
             telemetry.addData("motorBR Position: ", motorBRPosition);
             telemetry.addData("motorBL Position: ", motorBLPosition);
@@ -182,6 +233,9 @@ public class ActualFirst extends LinearOpMode {
             telemetry.addData("motorHR Position: ", motorHRPosition);
 
             telemetry.addData("motorArm position", armPos);
+
+            telemetry.addData("clawLeft pos", clawLeftPos);
+            telemetry.addData("clawRight pos", clawRightPos);
 
             telemetry.update();
         }

@@ -31,7 +31,7 @@ public class AutonC extends LinearOpMode {
         motorHL = hardwareMap.dcMotor.get("motorHL");
         motorHR = hardwareMap.dcMotor.get("motorHR");
 
-        motorHL.setDirection(DcMotor.Direction.REVERSE);
+        motorHR.setDirection(DcMotor.Direction.REVERSE);
 
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -44,7 +44,7 @@ public class AutonC extends LinearOpMode {
 
         waitForStart();
 
-        moveLift(1500, 1500, 1, 5000);
+        moveLift(1700, 1700, 1, 5000);
 
         shiftRight(3000, .5, 4000);
         //moveRightWheels(-3000, .5, 5000);
