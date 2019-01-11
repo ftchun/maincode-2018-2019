@@ -62,7 +62,7 @@ public class ActualFirst extends LinearOpMode {
         motorArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorArm.setPower(.5);
+        motorArm.setPower(.25);
 
         //speed var stuff
         int speedConstant = 1;
@@ -79,7 +79,7 @@ public class ActualFirst extends LinearOpMode {
         int liftPositionCountR = 0;
 
         //arm var stuff
-        int armDelta = 10;
+        int armDelta = 5;
         int armPos = 0;
 
         //reverse movement: if 1 then forward, if -1 then backward
