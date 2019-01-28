@@ -36,6 +36,8 @@ public class ActualFirst extends LinearOpMode {
     private Servo clawLeft;
     private Servo clawRight;
 
+    private DcMotor motorAct;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -59,6 +61,7 @@ public class ActualFirst extends LinearOpMode {
         clawLeft = hardwareMap.servo.get("clawLeft");
         clawRight = hardwareMap.servo.get("clawRight");
 
+        motorAct = hardwareMap.dcMotor.get("motorAct");
 
         /*
         * Now we have to set the modes for the motors. Certain motors require that they be
@@ -89,6 +92,7 @@ public class ActualFirst extends LinearOpMode {
         motorArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        motorAct.setDirection(DcMotor.Direction.REVERSE);
 
         /*
         * Next are the bank of variables that we initialize, which will be utilized later
@@ -295,6 +299,15 @@ public class ActualFirst extends LinearOpMode {
 
             moveLift(liftPositionCountL, liftPositionCountR, 1);
 
+            // Actuator
+            // Yo whoever looks at this code and has more braincells than me put in an if else statement, thank you
+            if(gamepad2.right_trigger > 0.0){
+                motorAct.setPower(.2);
+            }
+            if(gamepad2.left_trigger > 0.0){
+                motorAct.setPower(-.2);
+            }
+            motorAct.setPower(0);
 
             /*
             * Finally we have the telemetry. This is a display just for our coach to see
