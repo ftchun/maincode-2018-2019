@@ -68,13 +68,13 @@ public class AutonC extends LinearOpMode {
         * moves backward then right to turn around, then moves into the crater.
         */
 
-        moveLift(1700, 1700, 1, 5000);
+        moveLift(2100, 2100, 1, 7000);
 
         shiftRight(3000, .5, 4000);
 
-        move(-500, -.5, 1500);
+        move(-500, -.5, 2000);
 
-        shiftRight(1500, .5, 1500);
+        shiftRight(3000, .5, 3000);
 
         move(4500, .5, 5000);
     }

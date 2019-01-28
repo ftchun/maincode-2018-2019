@@ -69,9 +69,9 @@ public class AutonD extends LinearOpMode {
          * drops the servo and moves to get the marker off.
          */
 
-        moveLift(1700, 1700, 1, 5000);
+        moveLift(2100, 2100, 1, 7000);
 
-        shiftRight(1000, .5, 2500);
+        shiftRight(1000, .5, 3000);
 
         move(-1000, -.5, 2000);
 
