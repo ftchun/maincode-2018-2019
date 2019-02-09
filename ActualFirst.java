@@ -75,7 +75,7 @@ public class ActualFirst extends LinearOpMode {
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
 
-        motorHR.setDirection(DcMotor.Direction.REVERSE);
+        motorHL.setDirection(DcMotor.Direction.REVERSE);
 
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -281,6 +281,16 @@ public class ActualFirst extends LinearOpMode {
             motorArm.setTargetPosition(armPos);
 
 
+            //actuator control
+            if(gamepad2.right_trigger > 0) {
+                motorAct.setPower(1);
+            } else if(gamepad2.left_trigger > 0){
+                motorAct.setPower(-1);
+            } else {
+                motorAct.setPower(0);
+            }
+
+
             /*
             * The next block of code controls the linear lift, which uses the REV hex motors.
             * Just like the arm and claw, the lifts' positions are counted with their own
@@ -299,15 +309,7 @@ public class ActualFirst extends LinearOpMode {
 
             moveLift(liftPositionCountL, liftPositionCountR, 1);
 
-            // Actuator
-            // Yo whoever looks at this code and has more braincells than me put in an if else statement, thank you
-            if(gamepad2.right_trigger > 0.0){
-                motorAct.setPower(.2);
-            }
-            if(gamepad2.left_trigger > 0.0){
-                motorAct.setPower(-.2);
-            }
-            motorAct.setPower(0);
+
 
             /*
             * Finally we have the telemetry. This is a display just for our coach to see

@@ -46,7 +46,7 @@ public class AutonD extends LinearOpMode {
         motorHL = hardwareMap.dcMotor.get("motorHL");
         motorHR = hardwareMap.dcMotor.get("motorHR");
 
-        motorHR.setDirection(DcMotor.Direction.REVERSE);
+        motorHL.setDirection(DcMotor.Direction.REVERSE);
 
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
