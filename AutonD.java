@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * toward the depot, and uses the servo to drop our team marker in.
  */
 
-@Autonomous(name = "AutonD", group = "Linear")
+@Autonomous(name = "Depot", group = "Linear")
 public class AutonD extends LinearOpMode {
 
     /*
@@ -69,7 +69,7 @@ public class AutonD extends LinearOpMode {
          * drops the servo and moves to get the marker off.
          */
 
-        moveLift(2100, 2100, 1, 7000);
+        moveLift(2400, 2100, 1, 7000);
 
         shiftRight(1000, .5, 3000);
 
@@ -79,12 +79,12 @@ public class AutonD extends LinearOpMode {
 
         move(-5500, -.5, 4000);
 
-        servo.setPosition(.2);
+        servo.setPosition(.75);
         timer(2000);
 
         move(1000, .5, 2000);
 
-        servo.setPosition(.9);
+        servo.setPosition(.1);
         timer(2000);
 
     }

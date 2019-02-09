@@ -6,12 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /*
-* This is our crater-side Autonomous code. It lands the robot from the lander, turns around,
-* then sticks itself on the edge of the crater.
+*
 */
 
-@Autonomous(name = "Crater", group = "Linear")
-public class AutonC extends LinearOpMode {
+@Autonomous(name = "Landing only", group = "Linear")
+public class AutonLand extends LinearOpMode {
 
     /*
     * These are the definitions for the motors just like the TeleOp. Four driving motors,
@@ -26,7 +25,7 @@ public class AutonC extends LinearOpMode {
 
     private DcMotor motorHR;
     private DcMotor motorHL;
-
+	
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -63,20 +62,14 @@ public class AutonC extends LinearOpMode {
 
 
         /*
-        * See the bottom for more detailed descriptions of the methods used to move the
-        * robot. Essentially, the robot moves the lift up, turns right to get off the lander,
-        * moves backward then right to turn around, then moves into the crater.
+        *
         */
 
         moveLift(2400, 2100, 1, 7000);
 
         shiftRight(3000, .5, 4000);
 
-        move(-500, -.5, 2000);
-
-        shiftRight(3000, .5, 3000);
-
-        move(4500, .5, 5000);
+        move(-2000, -.5, 2000);
     }
 
 
